@@ -12,14 +12,16 @@ Un sistema di notifiche permette di tenere aggiornati venditori e compratori.
 - Acquisto immediato con "Compralo Subito"
 - Notifiche tra utenti
 
+### Prerequisiti
+
+- Python 3
+
 ## Tecnologie usate
 
 - Django
 - SQLite 
 - Bootstrap 4
 - Crispy Forms
-
-
 
 ## Installazione locale
 
@@ -43,7 +45,16 @@ Un sistema di notifiche permette di tenere aggiornati venditori e compratori.
 - Avviare il server
     ```bash
     python manage.py runserver
+    
+## Struttura
 
+Il progetto e' diviso in:
+- app per la gestione delle **aste**
+- app per la gestione degli utenti
+- app la gestione del sistema di **notifiche** a compratori e venditori
+
+## Front end
+La parte di front end e' realizzata con Bootstrap 4 e con Django Crispy form  
 
 ## License
 Released under [MIT License](LICENSE.txt).
