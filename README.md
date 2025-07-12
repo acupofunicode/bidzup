@@ -1,4 +1,4 @@
-# Bidzup 
+# <img width="100" height="auto" alt="logo" src="https://github.com/user-attachments/assets/fef863d8-31f8-4630-bf23-e22a759085e5" /> Bidzup 
 
 Bidzup è una piattaforma web di aste online in cui i venditori possono creare aste e gli acquirenti possono fare offerte o comprare subito gli oggetti messi all'asta. 
 Un sistema di notifiche permette di tenere aggiornati venditori e compratori.
