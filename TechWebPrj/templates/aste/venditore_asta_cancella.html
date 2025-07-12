@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} {{ asta.titolo }} di {{ user.username }} {% endblock %}
+{% block hero_content %} {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>{{ asta.titolo }}</h1>
+                <p>Riepilogo: <br />
+                    {{ asta.descrizione }}<br />
+                    Dal: {{ asta.data_inizio }} a: {{ asta.data_fine }}<br />
+                    Prezzo di riserva: {{ asta.reserve_price }} &euro;<br />
+                    Compra subito: {{ asta.buynow_price }} &euro;<br />
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <p>Confermi?</p>
+                    <input type="submit" value="Cancella" class="btn btn-get-started d-inline">
+                    <a href="{% url 'elenco_aste' %}" class="ml-5">Annulla</a>
+                </form>
+            </div>
+            <div class="col-lg-4">
+                <img class="d-block img-thumbnail" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}">
+            </div>
+        </div>
+    </div>
+{% endblock %}

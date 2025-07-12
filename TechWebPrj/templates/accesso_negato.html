@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Accesso negato {% endblock %}
+{% block hero_content %}
+    <h1>Pagina non disponibile</h1>
+{% endblock %}
+{% block content %}
+    <div>
+        <p class="text-center">
+            <img src="{% static 'images/pagine_accesso-negato.png' %}" alt="" class="mx-auto w-25 d-block">
+            Spiacente, non hai i privilegi per accedere a questa pagina.<br />
+            Se pensi si tratti di un errore, contatta l'assistenza. <br />
+            <a class=" mt-5 btn btn-get-started" href="mailto:assistenza@bidzup.com">Assistenza tecnica</a>
+        </p>
+    </div>
+{% endblock %}

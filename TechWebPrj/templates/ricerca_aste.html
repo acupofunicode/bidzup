@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load static %}
+
+{% block title %} Hai cercato: "{{ request.GET.q }}" {% endblock %}
+
+{% block hero_content %}
+    {% if request.GET.q %}
+        <h1>Risultati per "{{ request.GET.q }}"</h1>
+    {% else %}
+        <h1>{{ titolo_pagina }}</h1>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% if aste %}
+                {% for asta in aste %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}" />
+                            <div class="card-body">
+                                <p class="card-text">{{ asta.titolo }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="{% url 'utente_asta' asta.id %}" class="btn btn-get-started text-center">Vedi</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">Nessuna asta trovata.</p>
+                </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} {{ asta.titolo }} {% endblock %}
+{% block hero_content %}
+     <h1>{{ asta.titolo }}</h1>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{{ asta.immagini.first.immagine.url }}" class="w-25"/>
+            <h2>Descrizione</h2>
+            <p>{{ asta.descrizione }}</p>
+            <h2 class="mt-5">Ulteriori informazioni</h2>
+            <p>Scade: {{ asta.data_fine | date:"D d M Y" }}</p>
+            <p>Categoria: {{ asta.categoria }}</p>
+            {% if offerte_fatte %}
+                {% with offerte_fatte.first as top %}
+                    <h5>La tua offerta pi&uacute; alta: {{ top.importo | floatformat:2 }} &euro;</h5>
+                {%  endwith %}
+            {% else %}
+                <h5>Nessuna offerta presentata</h5>
+            {% endif %}
+        </div>
+        <div class="col-lg-6">
+            <h3>Fai un'offerta</h3>
+            <form method="post" class="d-inline">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <button type="submit" class="btn btn-get-started">Invia offerta</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

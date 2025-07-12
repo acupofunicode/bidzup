@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %} Aste a cui stai partecipando {% endblock %}
+
+{% block hero_content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Aste in corso</h1>
+            <p>Aste a cui stai partecipando</p>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% if aste.all %}
+                {% for asta in aste %}
+                    <div class="col-md-4">
+                      <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}" />
+                          <div class="card-body">
+                          <p class="card-text">{{ asta.titolo }}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                              <a href="{% url 'utente_asta' asta.id %}" class="btn btn-get-started text-center">Vedi</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <div class="col-12 text-center">
+                        <p>Al momento non stai partecipando ad alcuna asta</p>
+                        <a href="{% url 'aste_vedi_tutte' %}" class="btn btn-get-started"> Vedi le aste</a>
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

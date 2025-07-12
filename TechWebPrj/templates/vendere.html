@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Vendere su Bidzup {% endblock %}
+
+{% block hero_content %}
+    <h1>Trova l'acquirente perfetto per il tuo oggetto speciale</h1>
+    <p>Il sito di compravendita online leader in Europa per oggetti speciali e acquirenti appassionati.</p>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+             <div class="col-lg-5">
+                <h3>Perché vendere su Bizup?</h3>
+                <p class="py-4">Dopo una vendita, ti addebitiamo una commissione di vendita. <br />
+                    Serve a promuovere il tuo oggetto a livello internazionale e a semplificare le vendite ad acquirenti da tutto il mondo.</p>
+                    <a href="diventa-venditore/"class="btn btn-get-started">inizia a vendere!</a>
+            </div>
+            <div class="col-lg-7">
+                <img src="{% static 'images/vendere_banconota.png' %}" alt="" class="mx-auto w-50 d-block">
+            </div>
+        </div>
+        <div class="row py-5">
+            <div class="col-lg-5">
+                <img src="{% static 'images/vendere_money-bag.png' %}" alt="" class="mx-auto w-25 d-block">
+            </div>
+            <div class="col-lg-7">
+                <h3>Vendite sicure, senza costi nascosti.</h3>
+                <p class="py-4">Se sei nuovo nel mondo delle aste online o anche se vendi per professione, <br />
+                    possiamo aiutarti a guadagnare di più per i tuoi oggetti speciali..</p>
+            </div>
+        </div>
+        <div class="row py-5">
+            <div class="col-12 text-center">
+              <h2 class="text-accent font-weight-bold">Vendere con noi: come funziona</h2>
+              <h6 class="section-subtitle text-muted">Trova una nuova casa perfetta per il tuo oggetto speciale e ricevi assistenza durante tutto il processo.</h6>
+            </div>
+        </div>
+        <div class="row py-3">
+            <div class="col-4">
+                <img src="{% static 'images/vendere_storia.png' %}" alt="" class="mx-auto w-25 mx-auto d-block">
+                <h5 class="py-3 text-accent font-weight-bold">Racconta la storia del tuo oggetto speciale</h5>
+                <p>Mostra agli acquirenti cosa rende il tuo oggetto un ritrovamento così emozionante, aggiungendo ogni dettaglio e tante foto interessanti. <br />
+                      Uno dei nostri esperti esaminerà virtualmente il tuo oggetto speciale e, se soddisferà i nostri standard di qualità, lo inserirà nell'asta dove verrà infine trovato dal perfetto acquirente</p>
+            </div>
+            <div class="col-4">
+                <img src="{% static 'images/vendere_acquirente.png' %}" alt="" class="mx-auto w-25 mx-auto d-block">
+                  <h5 class="py-3 text-accent font-weight-bold">Troveremo l'acquirente perfetto</h5>
+                  <p>Troveremo qualcuno che ama il tuo oggetto quanto te – tu devi solo metterti comodo, rilassarti e goderti le offerte che iniziano ad arrivare.<br />
+                      Vendi come vuoi tu, con opzioni per impostare un prezzo minimo per determinati oggetti, vendere un'intera collezione e scegliere il metodo di spedizione.</p>
+            </div>
+            <div class="col-4">
+                <img src="{% static 'images/vendere_money-bag.png' %}" alt="" class="mx-auto w-25 mx-auto d-block">
+                <h5 class="py-3 text-accent font-weight-bold">Guadagna di più, senza pensieri</h5>
+                <p>L'asta finisce ed è il momento di impacchettare il tuo oggetto speciale e spedirlo alla sua nuova casa.<br />
+                      Riscuoteremo il pagamento dall'acquirente e lo terremo al sicuro. Una volta confermata la consegna, tu riceverai il pagamento.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_content %}
+<section class="bg-accent text-white>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-white pb-2">Gli acquirenti appassionati sono alla ricerca <br /> del tuo oggetto speciale.</h3>
+                <a href="/diventa-venditore/" class="btn btn-outline-get-started">inizia a vendere!</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

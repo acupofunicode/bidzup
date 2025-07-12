@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} {{ asta.titolo }} {% endblock %}
+{% block hero_content %}
+     <h1>{{ asta.titolo }}</h1>
+{% endblock %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if segue %}
+            <form method="post" action="{% url 'segui_asta_stop' asta.id %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-info"><i class="fa-solid fa-heart"></i></button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'segui_asta' asta.id %}">
+                {% csrf_token %}
+                <button class="btn btn-info"><i class="fa-regular fa-heart"></i> </button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Descrizione</h2>
+            <p>{{ asta.descrizione }}</p>
+            <div class="pb-3">
+                <span class="alert alert-danger"><span id="scade_tra" >Scade tra</span> <span id="countdown" ></span></span>
+            </div>
+            <h2 class="mt-5">Ulteriori informazioni</h2>
+            <p>Scadenza: {{ asta.data_fine | date:"D d M Y" }}</p>
+            <p>Categoria: {{ asta.categoria }}</p>
+            <p>Compra subito: {{ asta.buynow_price | floatformat:2 }} &euro;</p>
+        </div>
+        <div class="col-lg-6">
+            {% for img in asta.immagini.all %}
+                <a href="{{ img.immagine.url }}" target="_blank"><img src="{{ img.immagine.url }}" class="w-25"/></a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-12">
+            {% if asta.is_active and not asta.is_scaduta %}
+                {% if user.is_authenticated %}
+                    {% if  user.groups.all.0.name == 'Compratori' %}
+                        {% if offerta_maggiore > 0 %}
+                            <div class="alert alert-danger text-center">La tua offerta &egrave; stata superata</div>
+                        {% elif offerta_maggiore <= 0 %}
+                            <div class="alert alert-success text-center">Sei il maggior offerente!</div>
+                        {% else %}
+                            <h5 class="pb-5">Non hai fatto offerte</h5>
+                        {% endif %}
+                        <form action="{% url 'compra_subito' asta.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-get-started">Compralo subito</button>
+                        </form>
+                        <form action="{% url 'fai_offerta' asta.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-make-offer">Fai un'offerta</button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <div class="bg-accent text-white text-center p-3">
+                        <h4 class="text-white">Vuoi fare un'offerta?</h4>
+                        <a href="{% url 'login' %}?back_to={{ request.path }}" class="text-white get-started-link">effettua il login </a>oppure <a href="{% url 'registrati' %}" class="text-white get-started-link"> iscriviti</a>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="p-2 badge badge-danger">Asta conclusa</div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+    const endDate = new Date("{{ asta.data_fine|date:'c' }}");
+    function updateCountdown() {
+        const now = new Date();
+        const diff = endDate - now;
+
+        if (diff <= 0) {
+            document.getElementById("scade_tra").innerHTML = "";
+            document.getElementById("countdown").innerHTML = "Asta conclusa";
+            clearInterval(timer);
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("countdown").innerHTML =
+            `${days}g ${hours}h ${minutes}m ${seconds}s`;
+    }
+    updateCountdown();  // iniziale
+    const timer = setInterval(updateCountdown, 1000);  // aggiorna ogni secondo
+</script>
+{% endblock %}

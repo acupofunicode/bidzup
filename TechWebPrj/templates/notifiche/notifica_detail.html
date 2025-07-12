@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Leggi Messaggio {% endblock %}
+{% block hero_content %}
+    <h1>Leggi Messaggio</h1>
+{% endblock %}
+{% block content %}
+    <div class="col-lg-21 mx-auto">
+        <div class="">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Titolo: {{ notifica.titolo }}</h6>
+                <div class="media text-muted pt-3">
+                    <p class="media-body pb-3 ml-2 mb-0 lh-125 border-bottom border-gray">
+                        Messaggio del: {{ notifica.created_at | date:"d Y M h:m" }} <br />
+                        <span>{{ notifica.messaggio }}</span>
+                        <form action="{% url 'segna_come_letto' notifica.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <button class="btn btn-get-started">Segna come letto</button>
+                        </form>
+                        <form action="{% url 'cancella_notifica' notifica.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> </button>
+                        </form>
+                    </p>
+                </div>
+        </div>
+    </div>
+{% endblock %}

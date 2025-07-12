@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} {{ asta.titolo }} di {{ user.username }} {% endblock %}
+{% block hero_content %}
+     <h1>{{ asta.titolo }}</h1>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Descrizione</h2>
+            <p>{{ asta.descrizione }}</p>
+            <h2>Dettagli</h2>
+            {% if asta.is_active and asta.is_scaduta %}
+                <div class="alert alert-danger">L'asta &egrave; scaduta. </div>
+            {% endif %}
+            <ul class="list-items p-0">
+                <li class="list-group-item {% if asta.is_scaduta %} alert alert-danger {% endif %}" >Dal: {{ asta.data_inizio| date:"d M Y" }} al: {{ asta.data_fine | date:" d M Y" }}</li>
+                <li class="list-group-item">Categoria: {{ asta.categoria }}</li>
+                <li class="list-group-item">Prezzo di riserva: {{ asta.reserve_price | floatformat:2}} &euro;</li>
+                <li class="list-group-item">Compra subito: {{ asta.buynow_price | floatformat:2}} &euro;</li>
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            {% for img in asta.immagini.all %}
+                <a href="{{ img.immagine.url }}" target="_blank"><img src="{{ img.immagine.url }}" class="w-25"/></a>
+            {% endfor %}
+        </div>
+        <div class="col-lg-12">
+            {% if not asta.is_active and not asta.is_scaduta %}
+                <form action="{% url 'pubblica_asta' asta.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-get-started">Pubblica</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-lg-12">
+            {% if asta.offerte.all %}
+                <h2>Offerte presentate</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Offerente</th>
+                            <th scope="col">Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for offerta in offerte %}
+                        <tr class="{% if offerta.importo >= asta.reserve_price %} alert-success{% endif %}">
+                            <th scope="row"></th>
+                            <td>{{ offerta.offerente.username }}</td>
+                            <td>{{ offerta.data | date:"D d M Y  h:m"}} </td>
+                            <td>{{ offerta.importo | floatformat:2 }} &euro;</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="py-3">
+                    {% if asta.current_highest_bid.importo < asta.reserve_price %}
+                        <h3 class="alert-danger text-center p-2">Non &egrave; stato raggiunto il prezzo minimo per la vendita.</h3>
+                        <div class="col-lg-12 text-center">
+                            {% if asta.is_active and asta.is_scaduta %}
+                                <form action="{% url 'chiudi_asta' asta.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-close-bid">Chiudi asta</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if asta.current_highest_bid.importo >= asta.reserve_price %}
+                        <h3 class="alert-success text-center p-2">Il prezzo di riserva per la vendita &egrave; stato raggiunto!</h3>
+                        <div class="col-lg-12 text-center">
+                            {% if asta.is_active and asta.is_scaduta %}
+                                <form action="{% url 'chiudi_asta' asta.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-close-bid">Chiudi asta</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% elif asta.winner and asta.final_price and not asta.is_active %}
+                <h2>Vendita completata</h2>
+                <p>Venduto con l'opzione Compralo subito</p>
+                <h3>Dettagli della vendita</h3>
+                <p>Acquirente: {{ asta.winner }}</p>
+                <p>Data vendita: {{ asta.data_fine }}</p>
+                <p>Prezzo: {{ asta.final_price | floatformat:2 }} &euro;</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

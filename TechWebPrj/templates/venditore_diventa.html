@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %} Registrazione utente  {% endblock %}
+
+{% block hero_content %}
+    <h1>Registrati come venditore</h1>
+    <p>Compilare i dati necessari</p>
+{% endblock %}
+{% block content %}
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{form | crispy}}
+        <input type="submit" class="btn btn-get-started mt-3 d-block mx-auto" value="Inizia a vendere!">
+    </form>
+{% endblock %}

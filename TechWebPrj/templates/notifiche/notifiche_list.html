@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Leggi Messaggio {% endblock %}
+{% block hero_content %}
+    <h1>I tuoi messaggi</h1>
+    <p>Qui trovi i messaggi ricevuti</p>
+{% endblock %}
+{% block content %}
+    <div class="col-lg-21 mx-auto">
+        <div class="">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Elenco messaggi</h6>
+            {% for notifica in notifiche %}
+                <div class="media text-muted pt-3">
+                  {% if notifica.is_read %}
+                      <i class="fa-solid fa-envelope-open fa-2xl mt-3"></i>
+                  {% else %}
+                    <i class="fa-solid fa-envelope fa-2xl mt-3"></i>
+                  {% endif %}
+                    <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark ml-2">{{ notifica.titolo }}</strong>
+                        <span class="ml-2">{{ notifica.messaggio }}</span>
+                    </p>
+                    <a class="btn btn-get-started" href="{% url 'leggi_notifica' notifica.id %}"> Leggi </a>
+                    <form action="{% url 'cancella_notifica' notifica.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                {{ form | crispy }}
+                                <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> </button>
+                            </form>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

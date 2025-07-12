@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Login  {% endblock %}
+
+{% block hero_content %}
+    <h1>Login</h1>
+    <p class="text-center">Non sei ancora registrato? <a href="/registrati">Iscriviti</a></p>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-auto mt-3">
+            {% if "notok" in request.GET.auth %}
+                <div class="alert alert-danger">
+                    Non hai i permessi per accedere alla pagina richiesta
+                </div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {{form | crispy}}
+                <input name="back_to" type="hidden" value="{{ back_to }}"/>
+                <button type="submit" class="mt-3 btn btn-get-started">Login</button>
+            </form>
+          </div>
+        </div>
+    </div>
+{% endblock %}

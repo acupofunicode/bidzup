@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %} Le tue offerte per {{ asta.titolo }} {% endblock %}
+
+{% block hero_content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Le tue offerte</h1>
+            <h2>{{ asta.titolo }}</h2>
+            <p>Qui vedi le offerte ad aste concluse a cui hai partecipato senza aver vinto. </p>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <h3 class="text-center text-black-50">Offerte presentate</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for offerta in offerte %}
+                            <tr>
+                                <th scope="row"></th>
+                                <td>{{ offerta.data | date:"D d M Y  h:m"}} </td>
+                                <td>{{ offerta.importo | floatformat:2 }} &euro;</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'aste_vedi_tutte' %}">indietro</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

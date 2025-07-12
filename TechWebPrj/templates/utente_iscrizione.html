@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %} Registrazione utente  {% endblock %}
+
+{% block hero_content %}
+    <h1>Registrazione utente</h1>
+    <p>Compilare i dati necessari</p>
+{% endblock %}
+{% block content %}
+    <div class="w-75 p-3 mx-auto">
+        <form method="post">
+            {% csrf_token %}
+            {{form | crispy}}
+            <input type="submit" class="btn btn-get-started mt-3 d-block mx-auto" value="Registrati ora!">
+        </form>
+    </div>
+{% endblock %}

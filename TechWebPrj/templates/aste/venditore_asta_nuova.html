@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Nuova asta {{ user.username }}{% endblock %}
+{% block hero_content %}
+    <h1>Crea una nuova asta</h1>
+    <div class="text-left mx-auto">
+        <p>In questa pagina puoi creare la tua asta. Hai un limite di 6 foto e i campi contrassegnati con * sono obbligatori.</p>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    {{ formset.management_form }}
+                    <h4 class="py-3">Inserire un'immagine per ogni pulsante disponibile</h4>
+                    {% for form in formset %}
+                        {{ form.as_p }}
+                    {% endfor %}
+                    <button class="btn btn-get-started" type="submit">Crea asta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

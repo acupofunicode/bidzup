@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Le aste di Bizup {% endblock %}
+{% block hero_content %}
+    <h1>Le aste di Bizup </h1>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for asta in aste %}
+                {% if not asta.is_scaduta %}
+                    <div class="col-md-4">
+                      <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}" />
+                          <div class="card-body">
+                          <p class="card-text">{{ asta.titolo }}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                              <a href="{% url 'utente_asta' asta.id %}" class="btn btn-get-started text-center">Vedi</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

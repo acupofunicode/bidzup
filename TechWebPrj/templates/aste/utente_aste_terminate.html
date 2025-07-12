@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %} Aste terminate {% endblock %}
+
+{% block hero_content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Aste terminate</h1>
+            <p>Qui vedi le aste concluse a cui hai partecipato senza aver vinto. <br /> Per ogni asta puoi vedere le tue offerte</p>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for asta in aste %}
+                <div class="col-md-6">
+                  <div class="card mb-6 box-shadow">
+                    <img class="card-img-top" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}" />
+                      <div class="card-body">
+                      <h2 class="text-center text-accent">{{ asta.titolo }}</h2>
+                      <a href="{% url 'aste_terminate_dettaglio' asta.id %}" >Le mie offerte</a>
+                    </div>
+                  </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load static %}
+
+{% block title %} Bidzup {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-12">
+                <h1 class="font-weight-bold">bidzup</h1>
+                <h2>Esclusive aste online</h2>
+                <a href="/aste/" class="btn btn-get-started">Scopri tutte le aste</a>
+            </div>
+            <div class="col-lg-8 col-12">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    {% for asta in aste %}
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}"
+              class="{% if forloop.first %}active{% endif %}" aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
+                    <div class="carousel-inner">
+                        {% for asta in aste %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img class="d-block w-100" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                {% if not aste %}
+                    <img src="{% static 'images/demo/gioielli.jpg' %}" class="img-thumbnail">
+                {% endif %}
+            </div>
+        </div>
+        <div class="row py-5">
+            <div class="col-12 py-5"><h2 class="text-center">Le ultime aste concluse</h2></div>
+        </div>
+        <div class="row home-selection">
+            {% for asta_terminata in aste_terminate %}
+            <div class="col-3">
+                <div class="img-container">
+                    <img class="d-block w-100" src="{{ asta_terminata.immagini.first.immagine.url }}" alt="{{ asta_terminata.titolo }}">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row py-5">
+            <div class="col-3 py-5">
+                <h3>Esplora le nostre categorie</h3>
+            </div>
+            <div class="col-9 py-5">
+                <div style="column-count: 4">
+                    <ul class="list-group">
+                    {% for categoria in categorie %}
+                       <li class="list-group-item"><a href="{% url 'categoria' categoria.id %}">{{ categoria.name }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} {{ acquisto.titolo }} di {{ user.username }} {% endblock %}
+{% block hero_content %}
+     <h1>{{ acquisto.titolo }}</h1>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Descrizione</h2>
+            <p>{{ acquisto.descrizione }}</p>
+            <h2 class="mt-5">Ulteriori informazioni</h2>
+            <p>Acquistato il: {{ acquisto.data_fine | date:"D d M Y" }}</p>
+            <p>Categoria: {{ acquisto.categoria }}</p>
+            <p>Prezzo pagato: <span class="badge badge-info">{{ acquisto.final_price | floatformat:2 }} &euro;</span></p>
+        </div>
+        <div class="col-lg-6">
+            {% for img in acquisto.immagini.all %}
+                <a href="{{ img.immagine.url }}" target="_blank"><img src="{{ img.immagine.url }}" class="w-25"/></a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

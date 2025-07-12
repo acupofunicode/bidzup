@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Le aste di {{ user.username }} {% endblock %}
+{% block hero_content %}
+    <h1>Aste di {{ user.username }}</h1>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                  <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{% static 'images/logo.png' %}" alt="Nuova asta" />
+                      <div class="card-body">
+                      <p class="card-text">Crea una nuova asta</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                          <a href="{% url 'crea_asta' %}" class="btn btn-sm btn-outline-secondary">Nuova</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            {% for asta in aste %}
+                <div class="col-md-4">
+                  <div class="card mb-4 box-shadow p-1{% if asta.is_active and not asta.is_scaduta %} alert-warning {% elif asta.winner is not null %} alert-success {% else %} alert-danger{% endif %}">
+                    <img class="card-img-top" src="{{ asta.immagini.first.immagine.url }}" alt="{{ asta.titolo }}" />
+                      <div class="card-body">
+                      <p class="card-text">{{ asta.titolo }}</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                          {% if asta.is_active and asta.is_scaduta %}
+                              <a href="{% url 'asta_dettaglio' asta.id %}" class="btn btn-danger">Controlla Asta</a>
+                          {% else %}
+                              <a href="{% url 'asta_dettaglio' asta.id %}" class="btn btn-sm btn-outline-secondary">Vedi</a>
+                          {% endif %}
+                          {% if not asta.is_active and not asta.winner %}
+                                <a href="{% url 'asta_modifica' asta.id %}" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                                <a href="{% url 'asta_cancella' asta.id %}" class="btn btn-sm btn-outline-secondary">Elimina</a>
+                                {% if not asta.is_scaduta %}
+                                    <form action="{% url 'pubblica_asta' asta.id %}" method="post" class="d-inline ml-5">
+                                      {% csrf_token %}
+                                      <button type="submit" class="btn btn-sm btn-outline-secondary">Pubblica</button>
+                                    </form>
+                                {% else %}
+                                    </div>
+                                    </div>
+                                    <small>Potrai pubblicare quest'asta dopo aver cambiato la data di fine</small>
+                                {% endif %}
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

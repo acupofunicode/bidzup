@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %} Registrazione utente  {% endblock %}
+
+{% block hero_content %}
+    <div class="row">
+        <h1>Benvenuto, {{ user.username }}</h1>
+    </div>
+{% endblock %}
+{% block content %}
+    <div>
+        <h2>Profilo dell'utente</h2>
+        form con le altre info
+    </div>
+{% endblock %}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link rel="apple-touch-icon" href="{% static 'images/ico.png' %}" sizes="180x180">
+    <link rel="icon" href="{% static 'images/ico.png' %}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{% static 'images/ico.png' %}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{% static 'images/ico.png' %}">
+     <script type="application/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{%  static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/font-awesome.js' %}" crossorigin="anonymous"></script>
+ </head>
+  <body class="index-page">
+  <header id="header" class="header d-flex align-items-center  sticky-top">
+        <div class="container-fluid position-relative d-flex align-items-center justify-content-center">
+          <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+            <img src="{% static 'images/logo.png' %}" alt="" data-aos="fade-in" />
+          </a>
+          <nav id="navmenu" class="navmenu">
+            <ul>
+             <li>
+                  <form method="get" action="{% url 'ricerca_aste' %}" class="form-inline my-2 my-lg-0">
+                    <div class="input-group input-group-lg">
+                      <select name="categoria" class="dropdown border">
+                        <option value="">Categorie</option>
+                        {% for cat in categorie %}
+                            <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                      </select>
+                      <input type="text" class="form-control" name="q" aria-label="Ricerca" aria-describedby="inputGroup-sizing-lg">
+                      <button class="btn btn-light my-2 my-sm-0 border" type="submit">Cerca</button>
+                    </div>
+                  </form>
+              </li>
+              <li><a href="/vendere">Vendere</a></li>
+              <li><a href="/aiuto">Aiuto</a></li>
+              {% block header1 %}
+                 {% if user.is_authenticated  %}
+                    <li class="dropdown">
+                        <a href="#" class="text-capitalize" >Welcome, {{ user.username }} <i class="fa-solid fa-caret-down"></i></a>
+                        <ul>
+                            <p class="inline-list-description">Utente</p>
+                            <li><a href="/profilo/">Profilo</a></li>
+                            <li>
+                                <a href="{% url 'notifiche' %}">Notifiche <span class="badge badge-info">{{ non_lette }}</span></a>
+                            </li>
+                            {% if perms.aste.can_do_asta %}
+                                <p class="inline-list-description">Venditore</p>
+                                <li><a href="/le-mie-aste/">Le mie aste</a></li>
+                            {% else %}
+                                <p class="inline-list-description">Aste</p>
+                                <li><a href="/aste-in-corso/">In corso</a></li>
+                                <li><a href="/aste-vinte/">Vinte</a></li>
+                                <li><a href="/aste-terminate/">Terminate</a></li>
+                            {% endif %}
+                            <li>
+                                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-login">Log Out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <a href="/login" class="btn-get-started">Login</a>
+                 {% endif %}
+                {% endblock %}
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+        </div>
+    </header>
+  <main class="main">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+    	<div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    {% block hero_content %} {% endblock %}
+                </div>
+            </div>
+        </div>
+    </section><!-- /Hero Section -->
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-12">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success text-center">
+                          {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </div>
+  </main>
+  {% block extra_content %}{% endblock %}
+  <footer id="footer" class="footer light-background mt-4">
+    <div class="container">
+        <nav id="navmenu" class="navmenu  d-flex justify-content-center">
+            <ul>
+                <li><a href="/chi-siamo">Bidzup</a></li>
+                {% if not user.is_authenticated %}
+                    <li><a href="/diventa-venditore">Diventa venditore</a></li>
+                {% endif %}
+                <li><a href="/contatti">Contatti</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="social-links d-flex justify-content-center">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+    <div class="container-fluid credits text-white">
+      Bidzup by Anna Gabrielli - Matr. n. 152332
+    </div>
+  </footer>
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  </body>
+</html>
